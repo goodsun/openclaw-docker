@@ -201,8 +201,8 @@ docker-compose logs alice
 ```
 
 よくある原因:
-- `.env`ファイルが存在しない → `.env.example`をコピー
-- UID/GID不一致 → `docker-compose.yml`の`user:`を確認
+- `.env`ファイルが存在しない → `./scripts/setup-instance.sh alice` で作成
+- UID/GID不一致 → `instances/alice/.env` の `CONTAINER_UID/CONTAINER_GID` を確認
 - ポート競合 → `18790`が使われていないか確認
 
 ### パーミッションエラー
