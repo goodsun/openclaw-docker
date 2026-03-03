@@ -17,6 +17,10 @@ RUN npm install -g openclaw@2026.3.2
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+# OpenClaw用ディレクトリ作成（rootで作成してからnode所有権に）
+RUN mkdir -p /home/node/.openclaw && \
+    chown -R node:node /home/node
+
 # 非rootユーザーで実行（セキュリティ）
 USER node
 WORKDIR /home/node
