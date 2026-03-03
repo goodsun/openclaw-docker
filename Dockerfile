@@ -1,5 +1,5 @@
 # bon-soleil OpenClaw base image
-# Mephi-approved version (95/100) — Phase 1 ready
+# Mephi-approved version (98/100) — Phase 1 ready
 
 FROM node:22-slim
 
@@ -12,6 +12,10 @@ RUN apt-get update && apt-get install -y tzdata git wget && \
 
 # OpenClaw インストール（バージョン固定）
 RUN npm install -g openclaw@2026.3.2
+
+# エントリーポイントスクリプト追加
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # 非rootユーザーで実行（セキュリティ）
 USER node
@@ -31,5 +35,6 @@ EXPOSE 18789
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget --spider -q http://localhost:18789/health || exit 1
 
-# 起動
-CMD ["openclaw", "gateway"]
+# エントリーポイント
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["openclaw", "gateway", "start"]

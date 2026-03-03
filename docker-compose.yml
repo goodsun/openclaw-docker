@@ -1,8 +1,6 @@
 # bon-soleil Holdings — Container Office
-# Mephi-approved configuration (95/100)
+# Mephi-approved configuration (98/100)
 # Phase 1: Alice PoC
-
-version: '3.8'
 
 services:
   # アリス（開発・技術担当）
