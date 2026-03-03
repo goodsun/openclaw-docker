@@ -4,18 +4,25 @@
 
 set -e
 
-CONFIG_FILE="/home/node/config/openclaw.yml"
+CONFIG_FILE="/home/node/.openclaw/openclaw.json"
 
 # 初回起動時の設定
 if [ ! -f "$CONFIG_FILE" ]; then
   echo "🚀 初回セットアップ中..."
   
-  # openclaw setupを非対話モードで実行
-  # .envから環境変数を読み取って設定される
-  openclaw setup --non-interactive || {
-    echo "⚠️  openclaw setup failed, trying gateway.mode=local"
+  # Telegramなしの場合はlocalモード（TUI/WebChat）
+  if [ -z "$TELEGRAM_BOT_TOKEN" ]; then
+    echo "📝 Telegramなし → localモード（TUI/WebChat）"
     openclaw config set gateway.mode local
-  }
+    openclaw config set gateway.apiKey "$ANTHROPIC_API_KEY"
+  else
+    echo "📱 Telegram設定あり → setup実行"
+    openclaw setup --non-interactive || {
+      echo "⚠️  openclaw setup failed, fallback to local mode"
+      openclaw config set gateway.mode local
+      openclaw config set gateway.apiKey "$ANTHROPIC_API_KEY"
+    }
+  fi
   
   echo "✅ セットアップ完了"
 fi

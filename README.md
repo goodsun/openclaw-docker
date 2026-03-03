@@ -85,8 +85,8 @@ CONTAINER_GID=1000
 ```
 
 **APIキー等:**
-- `ANTHROPIC_API_KEY`: https://console.anthropic.com/settings/keys で取得
-- `TELEGRAM_BOT_TOKEN`: @BotFather で `/newbot` して取得
+- `ANTHROPIC_API_KEY`: https://console.anthropic.com/settings/keys で取得（**必須**）
+- `TELEGRAM_BOT_TOKEN`: @BotFather で `/newbot` して取得（**オプション** — 設定しない場合はTUI/WebChatのみ）
 
 ⚠️ **注意**: `docker-compose.yml`を直接編集しないでください。`.env`で設定します。
 
