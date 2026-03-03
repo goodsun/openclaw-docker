@@ -1,0 +1,17 @@
+# Container Office機密情報
+instances/*/.env
+instances/*/config/
+instances/*/sessions/*.jsonl
+
+# Docker
+.docker/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

@@ -1,0 +1,96 @@
+# bon-soleil Holdings — Container Office
+# Mephi-approved configuration (95/100)
+# Phase 1: Alice PoC
+
+version: '3.8'
+
+services:
+  # アリス（開発・技術担当）
+  alice:
+    build: .
+    image: bonsoleil/openclaw:latest
+    container_name: alice-openclaw
+    user: "1000:1000"  # Linux標準UID:GID（macOSでは 501:20）
+    volumes:
+      - ./instances/alice/workspace:/home/node/workspace
+      - ./instances/alice/sessions:/home/node/sessions
+      - ./instances/alice/config:/home/node/config
+    ports:
+      - "18790:18789"
+    networks:
+      - alice-net
+    restart: on-failure
+    env_file:
+      - ./instances/alice/.env
+    environment:
+      - TZ=Asia/Tokyo
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:18789/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # メフィ（CCO・レビュー担当）— Phase 2で有効化
+  # mephi:
+  #   build: .
+  #   image: bonsoleil/openclaw:latest
+  #   container_name: mephi-openclaw
+  #   user: "1000:1000"
+  #   volumes:
+  #     - ./instances/mephi/workspace:/home/node/workspace
+  #     - ./instances/mephi/sessions:/home/node/sessions
+  #     - ./instances/mephi/config:/home/node/config
+  #   ports:
+  #     - "18791:18789"
+  #   networks:
+  #     - mephi-net
+  #   restart: on-failure
+  #   env_file:
+  #     - ./instances/mephi/.env
+  #   environment:
+  #     - TZ=Asia/Tokyo
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '1.0'
+  #         memory: 2G
+  #       reservations:
+  #         memory: 512M
+  #   healthcheck:
+  #     test: ["CMD", "wget", "--spider", "-q", "http://localhost:18789/health"]
+  #     interval: 30s
+  #     timeout: 5s
+  #     retries: 3
+  #     start_period: 10s
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+
+networks:
+  alice-net:
+    driver: bridge
+  # mephi-net:
+  #   driver: bridge
+  # shared-db:
+  #   driver: bridge
+  #   # PostgreSQL/ollama共有が必要な場合、各サービスに追加:
+  #   # services:
+  #   #   alice:
+  #   #     networks:
+  #   #       - alice-net
+  #   #       - shared-db
