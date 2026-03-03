@@ -1,6 +1,7 @@
 # Container Office機密情報
 instances/*/.env
 instances/*/config/
+instances/*/workspace/
 instances/*/sessions/*.jsonl
 
 # Docker

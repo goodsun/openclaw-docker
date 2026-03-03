@@ -10,7 +10,7 @@ services:
     build: .
     image: bonsoleil/openclaw:latest
     container_name: alice-openclaw
-    user: "1000:1000"  # Linux標準UID:GID（macOSでは 501:20）
+    user: "${CONTAINER_UID:-1000}:${CONTAINER_GID:-1000}"
     volumes:
       - ./instances/alice/workspace:/home/node/workspace
       - ./instances/alice/sessions:/home/node/sessions
@@ -24,13 +24,9 @@ services:
       - ./instances/alice/.env
     environment:
       - TZ=Asia/Tokyo
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 2G
-        reservations:
-          memory: 512M
+    mem_limit: 2g
+    mem_reservation: 512m
+    cpus: 1.0
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:18789/health"]
       interval: 30s
@@ -48,7 +44,7 @@ services:
   #   build: .
   #   image: bonsoleil/openclaw:latest
   #   container_name: mephi-openclaw
-  #   user: "1000:1000"
+  #   user: "${CONTAINER_UID:-1000}:${CONTAINER_GID:-1000}"
   #   volumes:
   #     - ./instances/mephi/workspace:/home/node/workspace
   #     - ./instances/mephi/sessions:/home/node/sessions
@@ -62,13 +58,9 @@ services:
   #     - ./instances/mephi/.env
   #   environment:
   #     - TZ=Asia/Tokyo
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         cpus: '1.0'
-  #         memory: 2G
-  #       reservations:
-  #         memory: 512M
+  #   mem_limit: 2g
+  #   mem_reservation: 512m
+  #   cpus: 1.0
   #   healthcheck:
   #     test: ["CMD", "wget", "--spider", "-q", "http://localhost:18789/health"]
   #     interval: 30s
