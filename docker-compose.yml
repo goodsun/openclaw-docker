@@ -13,6 +13,7 @@ services:
       - ./instances/alice/workspace:/home/node/workspace
       - ./instances/alice/sessions:/home/node/sessions
       - ./instances/alice/config:/home/node/config
+      - ./instances/alice/.openclaw:/home/node/.openclaw
     ports:
       - "18790:18789"
     networks:
@@ -47,6 +48,7 @@ services:
   #     - ./instances/mephi/workspace:/home/node/workspace
   #     - ./instances/mephi/sessions:/home/node/sessions
   #     - ./instances/mephi/config:/home/node/config
+  #     - ./instances/mephi/.openclaw:/home/node/.openclaw
   #   ports:
   #     - "18791:18789"
   #   networks:

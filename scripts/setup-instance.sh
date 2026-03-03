@@ -46,7 +46,7 @@ fi
 
 # ディレクトリ作成
 echo "📁 ディレクトリ作成..."
-mkdir -p "$INSTANCE_DIR"/{workspace,sessions,config}
+mkdir -p "$INSTANCE_DIR"/{workspace,sessions,config,.openclaw}
 
 # .env作成
 if [ -f "$INSTANCE_DIR/.env" ]; then
