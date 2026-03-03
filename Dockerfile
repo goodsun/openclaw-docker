@@ -41,4 +41,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
 
 # エントリーポイント
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["openclaw", "gateway", "--foreground"]
+CMD ["openclaw", "gateway"]
