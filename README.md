@@ -33,25 +33,62 @@ git clone git@github.com:goodsun/openclaw-docker.git
 cd openclaw-docker
 ```
 
-#### 2. インスタンスディレクトリ作成
+#### 2. インスタンスセットアップ（推奨）
+
+セキュアなセットアップスクリプトを使用:
 
 ```bash
-mkdir -p instances/alice/{workspace,sessions,config}
+./scripts/setup-instance.sh alice
 ```
+
+これにより以下が自動実行されます:
+- ディレクトリ作成（`instances/alice/{workspace,sessions,config}`）
+- `.env`ファイル作成（`.env.example`からコピー）
+- **パーミッション設定（`chmod 600`）**
 
 #### 3. 環境変数設定
 
-```bash
-cp .env.example instances/alice/.env
-chmod 600 instances/alice/.env
+`.env`ファイルを編集:
 
-# エディタで編集
+```bash
 vim instances/alice/.env
 ```
 
-必須項目:
-- `ANTHROPIC_API_KEY`
-- `TELEGRAM_BOT_TOKEN`
+必須項目を設定:
+
+**UID/GID（重要）:**
+
+macOSとLinuxでUID/GIDが異なるため、現在の環境を確認して設定:
+
+**macOS:**
+```bash
+id -u  # 通常 501
+id -g  # 通常 20（staff）
+```
+
+```bash
+# instances/alice/.env
+CONTAINER_UID=501
+CONTAINER_GID=20
+```
+
+**Linux:**
+```bash
+id -u  # 通常 1000
+id -g  # 通常 1000
+```
+
+```bash
+# instances/alice/.env
+CONTAINER_UID=1000
+CONTAINER_GID=1000
+```
+
+**APIキー等:**
+- `ANTHROPIC_API_KEY`: https://console.anthropic.com/settings/keys で取得
+- `TELEGRAM_BOT_TOKEN`: @BotFather で `/newbot` して取得
+
+⚠️ **注意**: `docker-compose.yml`を直接編集しないでください。`.env`で設定します。
 
 #### 4. workspaceセットアップ
 
@@ -62,49 +99,25 @@ cd instances/alice
 unzip /path/to/alice-backup.zip
 ```
 
-#### 5. UID/GID確認（重要）
-
-**macOS:**
-```bash
-id -u  # 通常 501
-id -g  # 通常 20（staff）
-```
-
-**Linux:**
-```bash
-id -u  # 通常 1000
-id -g  # 通常 1000
-```
-
-`docker-compose.yml` の `user: "1000:1000"` を環境に合わせて修正:
-
-```yaml
-# macOSの場合
-user: "501:20"
-
-# Linuxの場合
-user: "1000:1000"
-```
-
-#### 6. イメージビルド
+#### 5. イメージビルド
 
 ```bash
 docker-compose build
 ```
 
-#### 7. 起動
+#### 6. 起動
 
 ```bash
 docker-compose up -d alice
 ```
 
-#### 8. ログ確認
+#### 7. ログ確認
 
 ```bash
 docker-compose logs -f alice
 ```
 
-#### 9. ヘルスチェック
+#### 8. ヘルスチェック
 
 ```bash
 docker ps
