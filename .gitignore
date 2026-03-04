@@ -23,3 +23,5 @@ instances/*/.env
 *.swo
 *~
 .env
+
+instances/mephi_dev_backup/.openclaw/logs/
