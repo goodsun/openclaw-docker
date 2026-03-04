@@ -38,46 +38,44 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  # メフィ（CCO・レビュー担当）— Phase 2で有効化
-  # mephi:
-  #   build: .
-  #   image: bonsoleil/openclaw:latest
-  #   container_name: mephi-openclaw
-  #   user: "${CONTAINER_UID:-1000}:${CONTAINER_GID:-1000}"
-  #   volumes:
-  #     - ./instances/mephi/workspace:/home/node/workspace
-  #     - ./instances/mephi/sessions:/home/node/sessions
-  #     - ./instances/mephi/config:/home/node/config
-  #     - ./instances/mephi/.openclaw:/home/node/.openclaw
-  #   ports:
-  #     - "18791:18789"
-  #   networks:
-  #     - mephi-net
-  #   restart: on-failure
-  #   env_file:
-  #     - ./instances/mephi/.env
-  #   environment:
-  #     - TZ=Asia/Tokyo
-  #   mem_limit: 2g
-  #   mem_reservation: 512m
-  #   cpus: 1.0
-  #   healthcheck:
-  #     test: ["CMD", "wget", "--spider", "-q", "http://localhost:18789/health"]
-  #     interval: 30s
-  #     timeout: 5s
-  #     retries: 3
-  #     start_period: 10s
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #       max-file: "3"
+  # メフィ（CCO・レビュー担当）— Phase 1: TUI限定
+  mephi:
+    build: .
+    image: bonsoleil/openclaw:latest
+    container_name: mephi-openclaw
+    user: "${CONTAINER_UID:-1000}:${CONTAINER_GID:-1000}"
+    volumes:
+      - ./instances/mephi/.openclaw:/home/node/.openclaw
+      - ./sample_workspace/mephi:/home/node/.openclaw/workspace
+    ports:
+      - "18791:18789"
+    networks:
+      - mephi-net
+    restart: on-failure
+    env_file:
+      - ./instances/mephi/.env
+    environment:
+      - TZ=Asia/Tokyo
+    mem_limit: 2g
+    mem_reservation: 512m
+    cpus: 1.0
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:18789/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   alice-net:
     driver: bridge
-  # mephi-net:
-  #   driver: bridge
+  mephi-net:
+    driver: bridge
   # shared-db:
   #   driver: bridge
   #   # PostgreSQL/ollama共有が必要な場合、各サービスに追加:

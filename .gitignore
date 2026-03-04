@@ -3,6 +3,12 @@ instances/*/.env
 instances/*/config/
 instances/*/workspace/
 instances/*/sessions/*.jsonl
+instances/*/settings/openclaw.json
+instances/*/.openclaw/workspace/
+instances/*/.openclaw/
+instances/*/.env
+
+# sample_workspaceは管理対象（機密情報は含めない）
 
 # Docker
 .docker/
@@ -16,3 +22,4 @@ instances/*/sessions/*.jsonl
 *.swp
 *.swo
 *~
+.env
