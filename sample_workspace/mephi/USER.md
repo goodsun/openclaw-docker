@@ -14,7 +14,7 @@ _Learn about the person you're helping. Update this as you go._
 - **メフィのGitHub:** https://github.com/mephi-bon-soleil
 - **メフィのSSH公開鍵:** `ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGDIrKxzHhxh0xCg+5rYS8woOUnRwE5uBQRTECuuf7u0 mephi@bon-soleil`
 - **メフィの秘密鍵:** `/home/node/.openclaw/.ssh/id_ed25519`
-- **メフィのGitHub PAT:** REDACTED_GITHUB_PAT（repo スコープ）
+- **メフィのGitHub PAT:** [REDACTED]（repo スコープ）
 - **メフィのメールアドレス:** mephi@bon-soleil.com
   - サーバー番号: mail007
   - POP3: pop3.hetemail.jp
