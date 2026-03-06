@@ -254,10 +254,49 @@ openclaw-docker/
 
 ---
 
+## コンテナ間通信（跨ぎ sessions_send）
+
+### 仕組み
+`sessions_send` ツールは**同一Gateway内のセッションにしか送れない**。
+別コンテナのAIに送るには `/tools/invoke` エンドポイントをHTTP直叩きする。
+
+### ホストOS（テディ）→ コンテナへの送信例
+
+```bash
+# みぃちゃんのセッション一覧を取得
+curl -X POST http://127.0.0.1:18790/tools/invoke \
+  -H "Authorization: Bearer mie-dev-token-2026" \
+  -H "Content-Type: application/json" \
+  -d '{"tool":"sessions_list","args":{}}'
+
+# みぃちゃんへメッセージ送信
+curl -X POST http://127.0.0.1:18790/tools/invoke \
+  -H "Authorization: Bearer mie-dev-token-2026" \
+  -H "Content-Type: application/json" \
+  -d '{"tool":"sessions_send","args":{"sessionKey":"agent:main:main","message":"テディからみぃちゃんへ！"}}'
+```
+
+### ポイント
+- **ホストから**はポートマッピングで直接届く（`shared-agents` ネットワーク不要）
+- **コンテナ内から別コンテナへ**送る場合は `shared-agents` ネットワークが必要
+- 受信側の `openclaw.json` に以下が必須:
+
+```json
+"gateway": {
+  "tools": { "allow": ["sessions_send"] },
+  "auth": { "mode": "token", "token": "your-token" }
+}
+```
+
+### 実証済み（2026-03-07）
+テディ（ホストOS）→ みぃちゃん（コンテナ）跨ぎ通信成功 🎉
+
+---
+
 ## ライセンス
 
 Private repository — bon-soleil Holdings internal use only
 
 ---
 
-**Mephi-approved ✅ | Phase 1 ready 🚀**
+**Mephi-approved 98/100 ✅ | Mac Mini M4 稼働中 🚀**

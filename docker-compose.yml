@@ -3,24 +3,25 @@
 # Phase 1: Alice PoC
 
 services:
-  # アリス（開発・技術担当）
-  alice:
+  # みぃちゃん（goodsunアシスタント）
+  mie:
     build: .
     image: bonsoleil/openclaw:latest
-    container_name: alice-openclaw
+    container_name: mie-openclaw
     user: "${CONTAINER_UID:-1000}:${CONTAINER_GID:-1000}"
     volumes:
-      - ./instances/alice/workspace:/home/node/workspace
-      - ./instances/alice/sessions:/home/node/sessions
-      - ./instances/alice/config:/home/node/config
-      - ./instances/alice/.openclaw:/home/node/.openclaw
+      - ./instances/mie/workspace:/home/node/workspace
+      - ./instances/mie/sessions:/home/node/sessions
+      - ./instances/mie/config:/home/node/config
+      - ./instances/mie/.openclaw:/home/node/.openclaw
     ports:
       - "18790:18789"
     networks:
-      - alice-net
+      - mie-net
+      - shared-agents
     restart: on-failure
     env_file:
-      - ./instances/alice/.env
+      - ./instances/mie/.env
     environment:
       - TZ=Asia/Tokyo
     mem_limit: 2g
@@ -51,6 +52,7 @@ services:
       - "18791:18789"
     networks:
       - mephi-net
+      - shared-agents
     restart: on-failure
     env_file:
       - ./instances/mephi/.env
@@ -72,15 +74,18 @@ services:
         max-file: "3"
 
 networks:
-  alice-net:
+  mie-net:
     driver: bridge
   mephi-net:
     driver: bridge
+  shared-agents:
+    driver: bridge
+
   # shared-db:
   #   driver: bridge
   #   # PostgreSQL/ollama共有が必要な場合、各サービスに追加:
   #   # services:
-  #   #   alice:
+  #   #   mie:
   #   #     networks:
-  #   #       - alice-net
+  #   #       - mie-net
   #   #       - shared-db

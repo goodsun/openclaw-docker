@@ -8,7 +8,7 @@ ENV TZ=Asia/Tokyo
 RUN apt-get update && apt-get install -y tzdata git wget python3 python3-pip python3-venv && \
     ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
     echo "Asia/Tokyo" > /etc/timezone && \
-    pip3 install --break-system-packages google-generativeai pillow requests && \
+    pip3 install --break-system-packages google-generativeai google-genai pillow requests && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # OpenClaw インストール（バージョン固定）

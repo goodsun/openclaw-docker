@@ -8,7 +8,14 @@ instances/*/.openclaw/workspace/
 instances/*/.openclaw/
 instances/*/.env
 
-# sample_workspaceは管理対象（機密情報は含めない）
+# sample_workspaceの機密情報・個人データは除外
+sample_workspace/*/.openclaw/
+sample_workspace/*/config/mailpass
+sample_workspace/*/logs/
+sample_workspace/*/projects/rag/
+sample_workspace/*/projects/staff_portal/sessions/
+sample_workspace/*/memory/
+sample_workspace/*/.env
 
 # Docker
 .docker/

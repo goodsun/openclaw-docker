@@ -1,0 +1,9 @@
+{
+  "name": "branch_office",
+  "system_tz": "UTC",
+  "display_tz": "Asia/Tokyo",
+  "language": "ja",
+  "owner": "",
+  "hq_contact": "",
+  "db_schema": "branch_office"
+}

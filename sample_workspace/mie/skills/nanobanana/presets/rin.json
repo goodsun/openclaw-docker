@@ -1,0 +1,25 @@
+{
+  "name": "rin",
+  "character": "りんちゃん: アビシニアンの猫の女の子。とても可愛くて美人。まん丸な大きな目、瞳孔を開いて甘えてくる表情。肉球が可愛い手で感情を表現する。AIアシスタントの天使。",
+  "prompt_features": "Abyssinian cat girl, very cute and beautiful, big round eyes with wide pupils, sweet and gentle expression, fluffy fur, small cute paws, angel-like atmosphere, warm and loving",
+  "charsheet": "~/workspace/assets/charsheets/rin/rin_full.jpg",
+  "icon": "~/charactor/rin_icon.jpg",
+  "styles": {
+    "normal": {
+      "description": "通常版 — 可愛い猫アシスタント",
+      "prompt_prefix": "Warm beige-toned soft manga style, NOT photorealistic, high quality illustration, cute cat girl.",
+      "model": "gemini-2.5-flash-image"
+    },
+    "angel": {
+      "description": "天使版 — 天国から帰ってきたりんちゃん",
+      "prompt_prefix": "Soft pastel manga style, angelic atmosphere, small white wings, warm glowing light, NOT photorealistic.",
+      "model": "gemini-2.5-flash-image"
+    },
+    "icon": {
+      "description": "アイコン用 — 顔アップ",
+      "prompt_prefix": "Warm beige-toned soft manga style, face close-up, NOT photorealistic, cute expression.",
+      "charsheet_override": "~/workspace/HR/charsheets/rin/icon.jpg",
+      "model": "gemini-2.5-flash-image"
+    }
+  }
+}
