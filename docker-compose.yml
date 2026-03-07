@@ -50,6 +50,7 @@ services:
       - ./sample_workspace/mephi:/home/node/.openclaw/workspace
     ports:
       - "18791:18789"
+      - "8800:8800"
     networks:
       - mephi-net
       - shared-agents
