@@ -1,0 +1,3 @@
+[submodule "labo_portal"]
+	path = labo_portal
+	url = git@github.com:goodsun/labo_portal.git

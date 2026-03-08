@@ -32,3 +32,4 @@ sample_workspace/*/.env
 .env
 
 instances/mephi_dev_backup/.openclaw/logs/
+instances/**/*.env

@@ -1,0 +1,19 @@
+#!/bin/bash
+# .githooks/pre-push
+# labo_portal submoduleが親より進んでいたらpushをブロック
+
+STALE=$(git submodule status | grep '^+')
+
+if [ -n "$STALE" ]; then
+  echo ""
+  echo "⚠️  警告: 以下のsubmoduleは更新されていますが openclaw-docker に記録されていません:"
+  echo "$STALE"
+  echo ""
+  echo "  push前に以下を実行してください:"
+  echo "    git add labo_portal"
+  echo "    git commit -m 'chore: update labo_portal submodule'"
+  echo ""
+  echo "  強制pushする場合: git push --no-verify（非推奨）"
+  echo ""
+  exit 1
+fi

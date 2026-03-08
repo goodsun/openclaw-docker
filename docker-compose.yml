@@ -39,7 +39,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  # メフィ（CCO・レビュー担当）— Phase 1: TUI限定
+  # メフィ（CCO・レビュー担当）
   mephi:
     build: .
     image: bonsoleil/openclaw:latest
@@ -48,6 +48,9 @@ services:
     volumes:
       - ./instances/mephi/.openclaw:/home/node/.openclaw
       - ./sample_workspace/mephi:/home/node/.openclaw/workspace
+      - ./mephi_data:/home/node/.openclaw/workspace/data
+      - ./labo_portal:/home/node/labo_portal
+      - ./instances/mephi/labo_portal.env:/home/node/labo_portal/.env
     ports:
       - "18791:18789"
       - "8800:8800"
@@ -74,6 +77,27 @@ services:
         max-size: "10m"
         max-file: "3"
 
+  # bon-soleil RAG Service — ChromaDB黒箱コンテナ
+  rag:
+    build:
+      context: ./rag_service
+    container_name: rag-service
+    restart: unless-stopped
+    environment:
+      - CHROMA_PATH=/data/chroma
+      - DEFAULT_COLLECTION=default
+    volumes:
+      - rag_data:/data
+    ports:
+      - "3001:3001"
+    networks:
+      - shared-agents
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 networks:
   mie-net:
     driver: bridge
@@ -84,9 +108,6 @@ networks:
 
   # shared-db:
   #   driver: bridge
-  #   # PostgreSQL/ollama共有が必要な場合、各サービスに追加:
-  #   # services:
-  #   #   mie:
-  #   #     networks:
-  #   #       - mie-net
-  #   #       - shared-db
+
+volumes:
+  rag_data:
