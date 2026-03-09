@@ -49,7 +49,7 @@ services:
       - ./instances/mephi/.openclaw:/home/node/.openclaw
       - ./sample_workspace/mephi:/home/node/.openclaw/workspace
       - ./mephi_data:/home/node/.openclaw/workspace/data
-      - ./labo_portal:/home/node/labo_portal
+      - /Users/teddy/labo_portal:/home/node/labo_portal
       - ./instances/mephi/labo_portal.env:/home/node/labo_portal/.env
     ports:
       - "18791:18789"
