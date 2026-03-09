@@ -13,6 +13,7 @@ services:
       - ./instances/mie/.openclaw:/home/node/.openclaw
       - ./instances/mie/workspace:/home/node/.openclaw/workspace
       - ./instances/mie/labo_portal:/home/node/labo_portal
+      - ./mie_data:/home/node/labo_portal/data
     ports:
       - "18790:18789"
     networks:
@@ -49,7 +50,7 @@ services:
       - ./sample_workspace/mephi:/home/node/.openclaw/workspace
       - ./mephi_data:/home/node/.openclaw/workspace/data
       - ./instances/mephi/labo_portal:/home/node/labo_portal
-      - ./instances/mephi/labo_portal:/home/node/labo_portal
+      - ./mephi_labo_data:/home/node/labo_portal/data
       - ./instances/mephi/labo_portal.env:/home/node/.labo_portal_env
     ports:
       - "18791:18789"
