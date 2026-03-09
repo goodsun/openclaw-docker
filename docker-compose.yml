@@ -12,6 +12,7 @@ services:
     volumes:
       - ./instances/mie/.openclaw:/home/node/.openclaw
       - ./instances/mie/workspace:/home/node/.openclaw/workspace
+      - ./instances/mie/labo_portal:/home/node/labo_portal
     ports:
       - "18790:18789"
     networks:
