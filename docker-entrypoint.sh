@@ -5,6 +5,8 @@
 set -e
 
 CONFIG_FILE="/home/node/.openclaw/openclaw.json"
+LABO_PORTAL_DIR="/home/node/labo_portal"
+LABO_PORTAL_REPO="https://github.com/goodsun/labo_portal.git"
 
 # 初回起動時の設定
 if [ ! -f "$CONFIG_FILE" ] || [ "$(cat $CONFIG_FILE)" = "{}" ]; then
@@ -25,6 +27,15 @@ if [ ! -f "$CONFIG_FILE" ] || [ "$(cat $CONFIG_FILE)" = "{}" ]; then
   fi
   
   echo "✅ セットアップ完了"
+fi
+
+# labo_portal のセットアップ（初回のみ clone）
+if [ ! -d "$LABO_PORTAL_DIR/.git" ]; then
+  echo "📦 labo_portal をクローン中..."
+  git clone --depth=1 "$LABO_PORTAL_REPO" "$LABO_PORTAL_DIR"
+  echo "✅ labo_portal クローン完了"
+else
+  echo "✅ labo_portal 既存 (git pull は手動で)"
 fi
 
 # 引数をそのまま実行
