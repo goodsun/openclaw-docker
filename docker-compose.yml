@@ -10,10 +10,8 @@ services:
     container_name: mie-openclaw
     user: "${CONTAINER_UID:-1000}:${CONTAINER_GID:-1000}"
     volumes:
-      - ./instances/mie/workspace:/home/node/workspace
-      - ./instances/mie/sessions:/home/node/sessions
-      - ./instances/mie/config:/home/node/config
       - ./instances/mie/.openclaw:/home/node/.openclaw
+      - ./instances/mie/workspace:/home/node/.openclaw/workspace
     ports:
       - "18790:18789"
     networks:
