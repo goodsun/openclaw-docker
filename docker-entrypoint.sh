@@ -32,7 +32,11 @@ fi
 # labo_portal のセットアップ（初回のみ clone）
 if [ ! -d "$LABO_PORTAL_DIR/.git" ]; then
   echo "📦 labo_portal をクローン中..."
-  git clone --depth=1 "$LABO_PORTAL_REPO" "$LABO_PORTAL_DIR"
+  # .envなど既存ファイルがあってもgit initで対応
+  git init "$LABO_PORTAL_DIR"
+  git -C "$LABO_PORTAL_DIR" remote add origin "$LABO_PORTAL_REPO"
+  git -C "$LABO_PORTAL_DIR" fetch --depth=1 origin main
+  git -C "$LABO_PORTAL_DIR" checkout -f main
   echo "✅ labo_portal クローン完了"
 else
   echo "✅ labo_portal 既存 (git pull は手動で)"
