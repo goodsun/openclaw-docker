@@ -57,6 +57,7 @@ services:
     networks:
       - mephi-net
       - shared-agents
+    command: sh -c "node /home/node/labo_portal/dist/app.js >> /tmp/labo_portal.log 2>&1 & exec openclaw gateway"
     restart: on-failure
     env_file:
       - ./instances/mephi/.env
