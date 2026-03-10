@@ -134,11 +134,51 @@ docker logs <name>-openclaw --follow
 
 ## 注意点
 
-### labo_portal のパーミッション問題
+### ⚠️ labo_portal の共有マウントと環境変数の優先順位
 
-コンテナ内の `/home/node/` は `node` ユーザー所有。
-UID 501 で動作する場合、ボリュームマウントなしでは書き込めない。
-→ **必ず `instances/<name>/labo_portal/` をマウントすること。**
+`~/labo_portal` を全インスタンスで共有マウントしているため、
+`~/labo_portal/.env` はHQ（テディ）用の設定が入っている。
+
+labo_portal は `dotenv` を使っており、**環境変数（コンテナenv）が .env より優先される**。
+そのため、インスタンス固有の設定は必ず `instances/<name>/.env` に記載すること。
+
+**必須の上書き項目：**
+
+```env
+APP_BASE=/<name>              # labo_portalのベースパス
+LABO_PORT=8800                # ポート（HQは8801なので別にする）
+LABO_NAME=<name> labo-portal  # ポータル名
+LABO_AGENT=<AIの名前>         # ログイン画面に表示される名前
+WORKSPACE_ROOT=/home/node/.openclaw/workspace  # データ保存先
+LABO_SECRET=<ランダム文字列>  # セッション署名キー（HQと別にしないとCookieが共有される）
+LABO_PASSWORD=<パスワード>    # ログインパスワード
+```
+
+> ❌ `LABO_SECRET` を共有にすると、異なるインスタンス間でセッションCookieが有効になる
+> ❌ `LABO_PASSWORD` を設定しないとHQのパスワードが使われる
+> ✅ 実際に有効なパスワードは **環境変数に設定した値**（.envの値は無視される）
+
+### labo_portal の data ディレクトリ
+
+`WORKSPACE_ROOT/data/` 配下にプラグインデータが保存される：
+
+```
+workspace/data/
+  presets/          ← image_genのモデル・タッチプリセット
+  casts/            ← キャラクタープロファイル
+  docs/             ← ドキュメント・下書き
+  generated/        ← 生成画像
+  scenes/           ← シーン画像
+```
+
+`docker-compose.yml` で `workspace/data` をインスタンス別ボリュームにマウントすること：
+
+```yaml
+volumes:
+  - ./<name>_data:/home/node/.openclaw/workspace/data
+```
+
+> ⚠️ 旧構造の `labo_portal/data/image_gen/` は廃止済み。`workspace/data/presets/` が正しい場所。
 
 ### restart: on-failure の連続リトライ
 
