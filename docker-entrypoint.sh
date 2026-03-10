@@ -48,8 +48,16 @@ if [ ! -d "$LABO_PORTAL_DIR/.git" ]; then
   echo "📦 labo_portal をクローン中..."
   git clone --depth=1 "$LABO_PORTAL_REPO" "$LABO_PORTAL_DIR"
   echo "✅ labo_portal クローン完了"
+fi
+
+# labo_portal ビルド（dist/が存在しない場合）
+if [ ! -f "$LABO_PORTAL_DIR/dist/app.js" ]; then
+  echo "🔨 labo_portal をビルド中..."
+  cd "$LABO_PORTAL_DIR" && HOME=/tmp npm install --silent && HOME=/tmp npm run build
+  cd /home/node
+  echo "✅ labo_portal ビルド完了"
 else
-  echo "✅ labo_portal 既存 (git pull は手動で)"
+  echo "✅ labo_portal ビルド済み"
 fi
 
 # .env を labo_portal にコピー（マウントファイルから）
