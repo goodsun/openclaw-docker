@@ -29,6 +29,20 @@ if [ ! -f "$CONFIG_FILE" ] || [ "$(cat $CONFIG_FILE)" = "{}" ]; then
   echo "✅ セットアップ完了"
 fi
 
+# .env → openclaw.json 反映（起動毎に上書き。.envが唯一の設定源）
+if [ -n "$OPENCLAW_MODEL" ]; then
+  openclaw config set agents.defaults.model "$OPENCLAW_MODEL"
+fi
+if [ -n "$OPENCLAW_THINKING" ]; then
+  openclaw config set agents.defaults.thinkingDefault "$OPENCLAW_THINKING"
+fi
+if [ -n "$OPENCLAW_BIND" ]; then
+  openclaw config set gateway.bind "$OPENCLAW_BIND"
+fi
+if [ -n "$OPENCLAW_API_KEY" ]; then
+  openclaw config set gateway.apiKey "$OPENCLAW_API_KEY"
+fi
+
 # labo_portal のセットアップ（初回のみ clone）
 if [ ! -d "$LABO_PORTAL_DIR/.git" ]; then
   echo "📦 labo_portal をクローン中..."
