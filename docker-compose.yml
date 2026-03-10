@@ -12,14 +12,16 @@ services:
     volumes:
       - ./instances/mie/.openclaw:/home/node/.openclaw
       - ./instances/mie/workspace:/home/node/.openclaw/workspace
-      - ./instances/mie/labo_portal:/home/node/labo_portal
+      - /Users/teddy/labo_portal:/home/node/labo_portal
       - ./mie_data:/home/node/labo_portal/data
     ports:
       - "18790:18789"
+      - "18793:8800"
     networks:
       - mie-net
       - shared-agents
     restart: on-failure
+    command: sh -c "cd /home/node/labo_portal && node dist/app.js >> /tmp/labo_portal.log 2>&1 & exec openclaw gateway"
     env_file:
       - ./instances/mie/.env
     environment:

@@ -44,7 +44,8 @@ if [ -n "$OPENCLAW_API_KEY" ]; then
 fi
 
 # labo_portal のセットアップ（初回のみ clone）
-if [ ! -d "$LABO_PORTAL_DIR/.git" ]; then
+# dist/app.js が存在する場合はマウント済みとみなしてスキップ
+if [ ! -d "$LABO_PORTAL_DIR/.git" ] && [ ! -f "$LABO_PORTAL_DIR/dist/app.js" ]; then
   echo "📦 labo_portal をクローン中..."
   git clone --depth=1 "$LABO_PORTAL_REPO" "$LABO_PORTAL_DIR"
   echo "✅ labo_portal クローン完了"
