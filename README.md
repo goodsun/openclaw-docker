@@ -90,6 +90,25 @@ CONTAINER_GID=1000
 
 ⚠️ **注意**: `docker-compose.yml`を直接編集しないでください。`.env`で設定します。
 
+**エージェント設定（オプション）:**
+
+`.env`に以下を追加することで、エージェントの動作を制御できます:
+
+```bash
+# 使用モデル（デフォルトはopus。コスト管理のためsonnet推奨）
+OPENCLAW_MODEL=anthropic/claude-sonnet-4-6
+
+# 思考モード（adaptiveはコスト予測困難。明示的にoffを推奨）
+OPENCLAW_THINKING=off
+
+# ゲートウェイのバインドアドレス
+OPENCLAW_BIND=lan
+```
+
+> ⚠️ **重要**: これらの設定は**起動毎に`.env`の値でopenclaw.jsonを上書き**します。
+> コンテナ内で`openclaw config set`を手動実行しても、再起動時に`.env`の値に戻ります。
+> **設定の永続化は必ず`.env`で行ってください。**
+
 #### 4. workspaceセットアップ
 
 ```bash
