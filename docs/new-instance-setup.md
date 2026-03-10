@@ -214,3 +214,31 @@ docker compose up -d <name>
 
 *初号試験: mie（2026-03-10）*
 *文責: テディ🧸*
+
+---
+
+## インスタンスの設定を変更したい場合
+
+コンテナの環境変数は**起動時に固定**される。
+コンテナ内でsourceしてもopenclaw/labo_portalのプロセスには反映されない。
+
+### 変更手順（ホスト側で作業）
+
+```bash
+# 1. 設定を編集
+vi ~/openclaw-docker/instances/<name>/.env
+
+# 2. コンテナを再起動
+cd ~/openclaw-docker
+docker compose up -d <name>
+```
+
+### AIインスタンス自身が設定変更を依頼する場合
+
+みぃちゃん等のAIが設定変更を希望する場合：
+1. AI が変更内容をオーナーまたはテディに伝える
+2. ホスト側で `instances/<name>/.env` を編集
+3. `docker compose up -d <name>` で再起動
+
+> AIはコンテナ内からは自分の環境変数を変更できない。
+> 変更はホスト側の作業が必須。
