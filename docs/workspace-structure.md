@@ -24,11 +24,12 @@ workspace/
 │
 ├── data/
 │   ├── assets/
-│   │   ├── generated/         # 生成画像の一時置き場（使ったら削除）
+│   │   ├── generated/         # 生成画像の一時置き場
 │   │   └── uploads/           # アップロードファイル
 │   ├── casts/                 # キャラクターシート画像
 │   ├── docs/                  # ドキュメント・ドラフト
-│   ├── generated/             # labo_portal 画像生成出力
+│   │   ├── draft/             # 下書き置き場
+│   │   └── discussion/        # ディスカッション等
 │   ├── presets/               # モデルプリセット設定
 │   └── scenes/                # シーン素材
 │
@@ -145,7 +146,7 @@ cp ~/workspace/trash/SOUL.md.template ~/workspace/SOUL.md.template
 
 ## 注意事項
 
-- **workspace に `.git` を作らない** — MEMORY.md 等に個人情報が含まれるため
+- **workspace は git 管理禁止** — MEMORY.md・config/ 等に個人情報・APIキーが含まれるため。`git init` しないこと。`config/google/gemini_api_key` 等のAPIキーはこの前提の上で workspace 内に置いている。
 - **`node_modules/` は workspace 直下に置かない** — 各プロジェクト内部に閉じること
 - **APIキーはファイルに保存** — `config/google/gemini_api_key` 等へ
 - **`data/generated/` の画像は使用後削除** — 溜めない
