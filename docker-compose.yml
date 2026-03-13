@@ -12,9 +12,7 @@ services:
     volumes:
       - ./instances/abu/.openclaw:/home/node/.openclaw
       - ./instances/abu/workspace:/home/node/workspace
-      - ./mount_data/abu_data:/home/node/workspace/data
       - /Users/teddy/projects/labo_portal:/home/node/workspace/projects/labo_portal
-      - ./mount_data/abu_data:/home/node/workspace/projects/labo_portal/data
       - ./instances/abu/labo_portal.env:/home/node/.labo_portal_env
     ports:
       - "18790:18789"
@@ -39,7 +37,7 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 10s
+      start_period: 30s
     logging:
       driver: "json-file"
       options:
@@ -55,9 +53,7 @@ services:
     volumes:
       - ./instances/mephi/.openclaw:/home/node/.openclaw
       - ./instances/mephi/workspace:/home/node/workspace
-      - ./mount_data/mephi_data:/home/node/workspace/data
       - /Users/teddy/projects/labo_portal:/home/node/workspace/projects/labo_portal
-      - ./mount_data/mephi_data:/home/node/workspace/projects/labo_portal/data
       - ./instances/mephi/labo_portal.env:/home/node/.labo_portal_env
     ports:
       - "18791:18789"
@@ -82,7 +78,7 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 10s
+      start_period: 30s
     logging:
       driver: "json-file"
       options:
