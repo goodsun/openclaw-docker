@@ -5,8 +5,7 @@
 set -e
 
 CONFIG_FILE="/home/node/.openclaw/openclaw.json"
-LABO_PORTAL_DIR="/home/node/labo_portal"
-LABO_PORTAL_REPO="https://github.com/goodsun/labo_portal.git"
+LABO_PORTAL_DIR="/home/node/workspace/projects/labo_portal"
 
 # 初回起動時の設定
 if [ ! -f "$CONFIG_FILE" ] || [ "$(cat $CONFIG_FILE)" = "{}" ]; then

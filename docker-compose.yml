@@ -13,7 +13,8 @@ services:
       - ./instances/abu/.openclaw:/home/node/.openclaw
       - ./instances/abu/workspace:/home/node/workspace
       - ./mount_data/abu_data:/home/node/workspace/data
-      - ./mount_data/abu_data:/home/node/labo_portal/data
+      - /Users/teddy/projects/labo_portal:/home/node/workspace/projects/labo_portal
+      - ./mount_data/abu_data:/home/node/workspace/projects/labo_portal/data
       - ./instances/abu/labo_portal.env:/home/node/.labo_portal_env
     ports:
       - "18790:18789"
@@ -22,7 +23,7 @@ services:
       - abu-net
       - shared-agents
     restart: on-failure
-    command: sh -c "cd /home/node/labo_portal && node dist/app.js >> /tmp/labo_portal.log 2>&1 & exec openclaw gateway"
+    command: sh -c "cd /home/node/workspace/projects/labo_portal && node dist/app.js >> /tmp/labo_portal.log 2>&1 & exec openclaw gateway"
     env_file:
       - ./instances/abu/.env
     environment:
@@ -52,7 +53,8 @@ services:
       - ./instances/mephi/.openclaw:/home/node/.openclaw
       - ./instances/mephi/workspace:/home/node/workspace
       - ./mount_data/mephi_data:/home/node/workspace/data
-      - ./mount_data/mephi_data:/home/node/labo_portal/data
+      - /Users/teddy/projects/labo_portal:/home/node/workspace/projects/labo_portal
+      - ./mount_data/mephi_data:/home/node/workspace/projects/labo_portal/data
       - ./instances/mephi/labo_portal.env:/home/node/.labo_portal_env
     ports:
       - "18791:18789"
@@ -60,7 +62,7 @@ services:
     networks:
       - mephi-net
       - shared-agents
-    command: sh -c "cd /home/node/labo_portal && node dist/app.js >> /tmp/labo_portal.log 2>&1 & exec openclaw gateway"
+    command: sh -c "cd /home/node/workspace/projects/labo_portal && node dist/app.js >> /tmp/labo_portal.log 2>&1 & exec openclaw gateway"
     restart: on-failure
     env_file:
       - ./instances/mephi/.env
