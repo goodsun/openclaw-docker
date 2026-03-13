@@ -36,3 +36,4 @@ mount_data/
 
 instances/mephi_dev_backup/.openclaw/logs/
 instances/**/*.env
+nouse/
