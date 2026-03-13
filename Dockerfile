@@ -23,6 +23,15 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN mkdir -p /home/node/.openclaw && \
     chown -R node:node /home/node
 
+# labo_portal をビルド済みでイメージに含める
+RUN git clone --depth=1 https://github.com/goodsun/labo_portal.git /home/node/labo_portal \
+    && cd /home/node/labo_portal \
+    && HOME=/tmp npm install --silent \
+    && HOME=/tmp npm run build \
+    && rm -rf node_modules \
+    && chown -R node:node /home/node/labo_portal \
+    && chmod -R u+w /home/node/labo_portal
+
 # 非rootユーザーで実行（セキュリティ）
 USER node
 WORKDIR /home/node

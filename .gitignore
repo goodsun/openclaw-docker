@@ -17,6 +17,9 @@ sample_workspace/*/projects/staff_portal/sessions/
 sample_workspace/*/memory/
 sample_workspace/*/.env
 
+# マウントデータ（永続化データ、gitに含めない）
+mount_data/
+
 # Docker
 .docker/
 

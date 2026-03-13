@@ -3,27 +3,27 @@
 # Phase 1: Alice PoC
 
 services:
-  # みぃちゃん（goodsunアシスタント）
-  mie:
+  # Abu（XPathGenieサイドキック / エージェント実験枠）
+  abu:
     build: .
     image: bonsoleil/openclaw:latest
-    container_name: mie-openclaw
+    container_name: abu-openclaw
     user: "${CONTAINER_UID:-1000}:${CONTAINER_GID:-1000}"
     volumes:
-      - ./instances/mie/.openclaw:/home/node/.openclaw
-      - ./instances/mie/workspace:/home/node/.openclaw/workspace
-      - /Users/teddy/labo_portal:/home/node/labo_portal
-      - ./mie_data:/home/node/.openclaw/workspace/data
+      - ./instances/abu/.openclaw:/home/node/.openclaw
+      - ./instances/abu/workspace:/home/node/.openclaw/workspace
+      - ./mount_data/abu_data:/home/node/.openclaw/workspace/data
+      - ./mount_data/abu_data:/home/node/labo_portal/data
     ports:
       - "18790:18789"
       - "18793:8800"
     networks:
-      - mie-net
+      - abu-net
       - shared-agents
     restart: on-failure
     command: sh -c "cd /home/node/labo_portal && node dist/app.js >> /tmp/labo_portal.log 2>&1 & exec openclaw gateway"
     env_file:
-      - ./instances/mie/.env
+      - ./instances/abu/.env
     environment:
       - TZ=Asia/Tokyo
     mem_limit: 2g
@@ -50,9 +50,8 @@ services:
     volumes:
       - ./instances/mephi/.openclaw:/home/node/.openclaw
       - ./sample_workspace/mephi:/home/node/.openclaw/workspace
-      - ./mephi_data:/home/node/.openclaw/workspace/data
-      - ./instances/mephi/labo_portal:/home/node/labo_portal
-      - ./mephi_data:/home/node/labo_portal/data
+      - ./mount_data/mephi_data:/home/node/.openclaw/workspace/data
+      - ./mount_data/mephi_data:/home/node/labo_portal/data
       - ./instances/mephi/labo_portal.env:/home/node/.labo_portal_env
     ports:
       - "18791:18789"
@@ -103,7 +102,7 @@ services:
         max-file: "3"
 
 networks:
-  mie-net:
+  abu-net:
     driver: bridge
   mephi-net:
     driver: bridge

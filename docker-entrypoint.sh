@@ -43,27 +43,10 @@ if [ -n "$OPENCLAW_API_KEY" ]; then
   openclaw config set gateway.apiKey "$OPENCLAW_API_KEY"
 fi
 
-# labo_portal のセットアップ（初回のみ clone）
-# dist/app.js が存在する場合はマウント済みとみなしてスキップ
-if [ ! -d "$LABO_PORTAL_DIR/.git" ] && [ ! -f "$LABO_PORTAL_DIR/dist/app.js" ]; then
-  echo "📦 labo_portal をクローン中..."
-  git clone --depth=1 "$LABO_PORTAL_REPO" "$LABO_PORTAL_DIR"
-  echo "✅ labo_portal クローン完了"
-fi
-
-# labo_portal ビルド（dist/が存在しない場合）
-if [ ! -f "$LABO_PORTAL_DIR/dist/app.js" ]; then
-  echo "🔨 labo_portal をビルド中..."
-  cd "$LABO_PORTAL_DIR" && HOME=/tmp npm install --silent && HOME=/tmp npm run build
-  cd /home/node
-  echo "✅ labo_portal ビルド完了"
-else
-  echo "✅ labo_portal ビルド済み"
-fi
-
 # .env を labo_portal にコピー（マウントファイルから）
 if [ -f "/home/node/.labo_portal_env" ]; then
-  cp /home/node/.labo_portal_env "$LABO_PORTAL_DIR/.env"
+  cp /home/node/.labo_portal_env "$LABO_PORTAL_DIR/.env" 2>/dev/null || \
+    echo "⚠️  labo_portal .env コピーできませんでした（読み取り専用の可能性）"
   echo "✅ labo_portal .env セット完了"
 fi
 
