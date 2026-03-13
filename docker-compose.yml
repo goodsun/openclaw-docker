@@ -28,6 +28,9 @@ services:
       - ./instances/abu/.env
     environment:
       - TZ=Asia/Tokyo
+      - TERM=xterm-256color
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
     mem_limit: 2g
     mem_reservation: 512m
     cpus: 1.0
@@ -68,6 +71,9 @@ services:
       - ./instances/mephi/.env
     environment:
       - TZ=Asia/Tokyo
+      - TERM=xterm-256color
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
     mem_limit: 2g
     mem_reservation: 512m
     cpus: 1.0
