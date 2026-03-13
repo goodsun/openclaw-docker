@@ -11,9 +11,10 @@ services:
     user: "${CONTAINER_UID:-1000}:${CONTAINER_GID:-1000}"
     volumes:
       - ./instances/abu/.openclaw:/home/node/.openclaw
-      - ./instances/abu/workspace:/home/node/.openclaw/workspace
-      - ./mount_data/abu_data:/home/node/.openclaw/workspace/data
+      - ./instances/abu/workspace:/home/node/workspace
+      - ./mount_data/abu_data:/home/node/workspace/data
       - ./mount_data/abu_data:/home/node/labo_portal/data
+      - ./instances/abu/labo_portal.env:/home/node/.labo_portal_env
     ports:
       - "18790:18789"
       - "18793:8800"
@@ -30,7 +31,7 @@ services:
     mem_reservation: 512m
     cpus: 1.0
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:18789/health"]
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:18789/health"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -49,8 +50,8 @@ services:
     user: "${CONTAINER_UID:-1000}:${CONTAINER_GID:-1000}"
     volumes:
       - ./instances/mephi/.openclaw:/home/node/.openclaw
-      - ./sample_workspace/mephi:/home/node/.openclaw/workspace
-      - ./mount_data/mephi_data:/home/node/.openclaw/workspace/data
+      - ./instances/mephi/workspace:/home/node/workspace
+      - ./mount_data/mephi_data:/home/node/workspace/data
       - ./mount_data/mephi_data:/home/node/labo_portal/data
       - ./instances/mephi/labo_portal.env:/home/node/.labo_portal_env
     ports:
@@ -69,7 +70,7 @@ services:
     mem_reservation: 512m
     cpus: 1.0
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:18789/health"]
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:18789/health"]
       interval: 30s
       timeout: 5s
       retries: 3
