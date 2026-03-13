@@ -5,7 +5,6 @@
 set -e
 
 CONFIG_FILE="/home/node/.openclaw/openclaw.json"
-LABO_PORTAL_DIR="/home/node/workspace/projects/labo_portal"
 
 # 初回起動時の設定
 if [ ! -f "$CONFIG_FILE" ] || [ "$(cat $CONFIG_FILE)" = "{}" ]; then
@@ -42,12 +41,6 @@ if [ -n "$OPENCLAW_API_KEY" ]; then
   openclaw config set gateway.apiKey "$OPENCLAW_API_KEY"
 fi
 
-# .env を labo_portal にコピー（マウントファイルから）
-if [ -f "/home/node/.labo_portal_env" ]; then
-  cp /home/node/.labo_portal_env "$LABO_PORTAL_DIR/.env" 2>/dev/null || \
-    echo "⚠️  labo_portal .env コピーできませんでした（読み取り専用の可能性）"
-  echo "✅ labo_portal .env セット完了"
-fi
 
 # 引数をそのまま実行
 exec "$@"
