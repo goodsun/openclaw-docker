@@ -66,29 +66,22 @@ workspace/
 
 ## 各AIがやること（初回セットアップ）
 
-### 1. nouse/ に移す（古いディレクトリ）
+**ブルーグリーン方式**: 古いworkspaceを先に退避してから、新しい構成を作る。
+壊れたら `nouse/` から戻せるので安心。
 
-以前のworkspaceパスが `.openclaw/workspace` だった場合、不要なものを整理する：
+### 1. 古いworkspaceを nouse/ に退避
 
 ```bash
-# 古いworkspaceデータが残っていたら nouse/ へ
 mkdir -p ~/nouse
-mv ~/.openclaw/workspace ~/nouse/openclaw_workspace_old
+
+# 現在の workspace を丸ごと退避（タイムスタンプ付きで）
+mv ~/workspace ~/nouse/workspace_$(date +%Y%m%d_%H%M%S)
+
+# 古いパス（.openclaw/workspace）が残っていれば同様に
+# mv ~/.openclaw/workspace ~/nouse/openclaw_workspace_old
 ```
 
-また、workspace内の不要ファイルも整理：
-```bash
-# .npm-cache は不要
-rm -rf ~/workspace/.npm-cache
-
-# .DS_Store は不要
-find ~/workspace -name ".DS_Store" -delete
-
-# workspace内の .git は禁止（workspaceはgit管理しない）
-# ある場合は rm -rf ~/workspace/.git
-```
-
-### 2. 不足ディレクトリを作成
+### 3. 新しい workspace を作成
 
 ```bash
 mkdir -p ~/workspace/config/google
@@ -103,7 +96,7 @@ touch ~/workspace/projects/.gitkeep
 touch ~/workspace/scripts/.gitkeep
 ```
 
-### 3. labo_portal のセットアップ
+### 4. labo_portal のセットアップ
 
 ```bash
 cd ~/workspace/projects
@@ -127,7 +120,7 @@ EOF
 node dist/app.js &
 ```
 
-### 4. config を整備
+### 5. config を整備
 
 ```bash
 # division.json
