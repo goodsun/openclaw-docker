@@ -6,7 +6,7 @@ FROM node:22-slim
 # タイムゾーン
 ENV TZ=Asia/Tokyo
 RUN apt-get update && apt-get install -y \
-      tzdata git wget python3 python3-pip python3-venv vim \
+      tzdata git wget python3 python3-pip python3-venv vim tree \
     && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
     && echo "Asia/Tokyo" > /etc/timezone \
     && pip3 install --break-system-packages google-generativeai google-genai pillow requests \
