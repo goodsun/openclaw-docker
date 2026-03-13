@@ -28,9 +28,10 @@ RUN git clone --depth=1 https://github.com/goodsun/labo_portal.git /home/node/la
     && cd /home/node/labo_portal \
     && HOME=/tmp npm install --silent \
     && HOME=/tmp npm run build \
-    && rm -rf node_modules \
+    && HOME=/tmp npm prune --production \
     && chown -R node:node /home/node/labo_portal \
-    && chmod -R u+w /home/node/labo_portal
+    && chmod -R u+w /home/node/labo_portal \
+    && chmod -R 777 /home/node/labo_portal/dist/plugins
 
 # 非rootユーザーで実行（セキュリティ）
 USER node
