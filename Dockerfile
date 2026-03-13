@@ -5,11 +5,12 @@ FROM node:22-slim
 
 # タイムゾーン
 ENV TZ=Asia/Tokyo
-RUN apt-get update && apt-get install -y tzdata git wget python3 python3-pip python3-venv && \
-    ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
-    echo "Asia/Tokyo" > /etc/timezone && \
-    pip3 install --break-system-packages google-generativeai google-genai pillow requests && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+      tzdata git wget python3 python3-pip python3-venv vim \
+    && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
+    && echo "Asia/Tokyo" > /etc/timezone \
+    && pip3 install --break-system-packages google-generativeai google-genai pillow requests \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # OpenClaw インストール（バージョン固定）
 RUN npm install -g openclaw@2026.3.2
@@ -30,8 +31,6 @@ WORKDIR /home/node
 ENV HOME=/home/node
 ENV OPENCLAW_WORKSPACE=/home/node/workspace
 
-# ボリュームマウントポイント
-VOLUME ["/home/node/workspace", "/home/node/sessions", "/home/node/config"]
 
 # ポート
 EXPOSE 18789
