@@ -86,60 +86,89 @@ npm install && npm run build
 
 ## B. ホスト直置き版（テディ・アリス・彰子さん向け）
 
-**段階的整理**: 壊さずに不足を補い、余分を nouse/ へ逃がす。
+### テディ（HQ: /Users/teddy/workspace/）✅ 完了済み
 
-### テディ（HQ: /Users/teddy/workspace/）
+### アリス・彰子さん — Hetzner 新規環境（alice-hetzner）
 
-**やること:**
+**新規環境なのでブルーグリーン不要。workspaceはbase_wsからclone済み。**
+
+#### 1. EC2側の古い設定を持ってくる（SSH接続して実行）
+
 ```bash
-# 不足ディレクトリを追加
-mkdir -p ~/workspace/config/google
-mkdir -p ~/workspace/data/{assets/generated,assets/uploads,presets}
-mkdir -p ~/workspace/logs
-
-# SOUL.md.template を追加（branch_office テンプレートからコピー）
-
-# scripts/.git を削除（workspaceのgit管理禁止）
-rm -rf ~/workspace/scripts/.git
-
-# 画像直置きを nouse へ
-mkdir -p ~/nouse/workspace_images
-mv ~/workspace/*.jpg ~/workspace/*.png ~/nouse/workspace_images/ 2>/dev/null
-
-# documents/ は workspace 外へ（~/documents/ に移動 or そのまま維持）
+# EC2にSSH接続して、今のopenclaw設定を確認
+ssh alice  # または bizeny
+cat ~/.openclaw/openclaw.json
 ```
 
-### アリス（EC2 alice: ~/workspace/）
+必要な情報をメモ：
+- Telegram Bot Token
+- Anthropic API Key
+- Gemini API Key
 
-**現状:** ほぼ空（`projects/` に既存プロジェクトのみ）
+#### 2. Hetznerにopenclaw configureを実行
 
 ```bash
-# 標準ディレクトリを追加
-mkdir -p ~/workspace/config/google
-mkdir -p ~/workspace/data/{assets/generated,assets/uploads,casts,docs,generated,presets,scenes}
-mkdir -p ~/workspace/logs
-mkdir -p ~/workspace/memory
-mkdir -p ~/workspace/scripts/{common,samples,tests}
-mkdir -p ~/workspace/skills
-touch ~/workspace/memory/.gitkeep
-touch ~/workspace/scripts/.gitkeep
+ssh alice@157.180.42.159   # アリスの場合
+# または
+ssh bizeny@157.180.42.159  # 彰子さんの場合
 
-# AGENTS.md / SOUL.md / IDENTITY.md / TOOLS.md / USER.md / HEARTBEAT.md を作成
+openclaw configure
 ```
 
-### 彰子さん（EC2 bizeny: ~/workspace/）
+対話形式で以下を設定：
+- AI プロバイダー（Anthropic / Gemini）
+- Telegram Bot Token
+- `agents.defaults.workspace: /home/alice/workspace`（または `/home/bizeny/workspace`）
+- `gateway.mode: local`
 
-**現状:** かなり整ってる。`node_modules/` が workspace 直下に生えているのを退避するだけ。
+#### 3. Gemini APIキーをworkspaceに保存
 
 ```bash
-# node_modules を nouse へ（workspace直下に置くのはNG）
-mkdir -p ~/nouse
-mv ~/workspace/node_modules ~/nouse/workspace_node_modules_$(date +%Y%m%d)
+mkdir -p ~/workspace/config/google
+echo "YOUR_GEMINI_API_KEY" > ~/workspace/config/google/gemini_api_key
+```
 
-# SOUL.md.template が trash/ にあるので workspace/ に移動
-cp ~/workspace/trash/SOUL.md.template ~/workspace/SOUL.md.template
+#### 4. SOUL.md・IDENTITY.md・USER.mdを編集
 
-# 不足確認（logs/ はある、memory/ はある → ほぼOK）
+`/srv/shared/base_ws` のテンプレートが入っているので、自分用に書き換える。
+
+#### 5. systemdサービスとして登録
+
+```bash
+# rootで実行（sudoで）
+sudo tee /etc/systemd/system/openclaw-alice.service << EOF
+[Unit]
+Description=OpenClaw Gateway (Alice)
+After=network.target
+
+[Service]
+Type=simple
+User=alice
+WorkingDirectory=/home/alice/workspace
+Environment=HOME=/home/alice
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/local/bin/openclaw gateway
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable openclaw-alice
+sudo systemctl start openclaw-alice
+sudo systemctl status openclaw-alice
+```
+
+#### 6. EC2側の古いサービスを停止
+
+Hetzner側が安定したら、EC2のopenclaw gatewayを停止。
+
+```bash
+# EC2側
+sudo systemctl stop openclaw-gateway
+sudo systemctl disable openclaw-gateway
 ```
 
 ---
