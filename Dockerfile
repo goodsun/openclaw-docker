@@ -19,6 +19,11 @@ RUN npm install -g openclaw@2026.3.2
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+# macOS UID/GID 合わせ（macOS: node=501:20, Linux default: node=1000:1000）
+# コンテナ再起動で消えないよう Dockerfile に恒久化
+RUN sed -i 's/^node:x:[0-9]*:[0-9]*/node:x:501:20/' /etc/passwd && \
+    sed -i 's/^node:x:[0-9]*/node:x:501/' /etc/group || true
+
 # OpenClaw用ディレクトリ作成（rootで作成してからnode所有権に）
 RUN mkdir -p /home/node/.openclaw && \
     chown -R node:node /home/node
